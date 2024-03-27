@@ -1,7 +1,22 @@
-<html ng-app="custom-webapp-ui" lang="en" style="background-color: white">
-  <head>
-    <!-- Load the Telegram Library -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="176">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="robots" content="noindex, nofollow">
+    <title>VIP Manager</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        function setThemeClass() {
+          document.documentElement.className = Telegram.WebApp.colorScheme;
+        }
+        Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+        setThemeClass();
+      </script>
     <!--Load the AngularJS Library-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script>
@@ -25,14 +40,11 @@
         })
       });
     </script>
-  </head>
-  <body ng-controller="CustomUIController">
+</head>
+<body ng-controller="CustomUIController">
     <div ng-repeat="food in foods">
-      <div style="width: 100px; display: inline-block">
-        {{food.name}} : {{food.value}}
-        
-        </div>
+      <div style="width: 100px; display: inline-block"> {{food.name}} : {{food.value}} </div>
       <input style="display: inline-block" type="range" min="1" max="10" ng-model="food.value" value="{{food.value}}">
     </div>
-  </body>
+</body>
 </html>
