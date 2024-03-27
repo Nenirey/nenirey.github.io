@@ -17,17 +17,25 @@
         Telegram.WebApp.onEvent('themeChanged', setThemeClass);
         setThemeClass();
       </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
-    <script src="js/jquery/extensions.js"></script> <!-- Import own jQuery extension -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.9/lottie.min.js"></script>
-    <script type="module" src="js/index.js"></script>
-    <link rel="stylesheet" href="css/index.css"/>
+    <!--Load the AngularJS Library-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+      //initialize the AngularJS stuff...
+      angular.module("custom-webapp-ui", []).controller('CustomUIController', function CustomUIController($scope) {
+        //init our slider values that we will display
+        $scope.foods = [
+                { name: "fruits", value: 5 },
+                { name: "vegetables", value: 5 },
+                { name: "meat", value: 5 },
+                { name: "dairy", value: 5 }
+            ];
+      });
+    </script>
 </head>
-<body>
-    <div id="content">
-        <div id="page-current" class="page"></div>
-        <div id="page-next" class="page" style="display: none;"></div>
+<body ng-controller="CustomUIController">
+    <div ng-repeat="food in foods">
+      <div style="width: 100px; display: inline-block">{{food.name}} : {{food.value}}</div>
+      <input style="display: inline-block" type="range" min="1" max="10" ng-model="food.value" value="{{food.value}}">
     </div>
     <!-- <button id="telegram-button" style="position: absolute; width: calc(100% - 32px); height: 56px; bottom: 16px; margin-right: 16px; margin-left: 16px; z-index: 3;">Telegram button</button> -->
 </body>
