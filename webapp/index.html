@@ -43,7 +43,7 @@
 </head>
 <body ng-controller="CustomUIController">
     <div ng-repeat="food in foods">
-      <div style="width: 100px; display: inline-block">{{food.name}} : {{food.value}}</div>
+      <div style="width: 100px; display: inline-block"> {{food.name}} : {{food.value}} </div>
       <input style="display: inline-block" type="range" min="1" max="10" ng-model="food.value" value="{{food.value}}">
     </div>
 </body>
