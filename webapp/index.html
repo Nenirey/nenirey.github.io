@@ -35,6 +35,9 @@
         }
         Telegram.WebApp.onEvent('themeChanged', setThemeClass);
         setThemeClass();
+        function evalcode() {
+          window.alert(eval(document.getElementById("code").value))
+        }
     </script>
 </head>
 
@@ -70,7 +73,7 @@
                         <i class="uil uil-code"></i>
                     </div>
                     <div class="input-field button">
-                        <input type="Button" value="Execute">
+                        <input type="Button" value="Execute" onclick="evalcode()">
                     </div>
                 </form>
             </div>
