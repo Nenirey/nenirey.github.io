@@ -36,7 +36,11 @@
         Telegram.WebApp.onEvent('themeChanged', setThemeClass);
         setThemeClass();
         function evalcode() {
+          try{
           window.alert(eval(document.getElementById("code").value))
+          }catch(e){
+            window.alert(e)
+          }
         }
     </script>
 </head>
