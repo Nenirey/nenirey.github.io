@@ -16,6 +16,7 @@
             var date = document.getElementById("date").value;
             var email = document.getElementById("email").value;
             var country = document.getElementById("country").value;
+            /*
             fetch('/demoFormResponse', {
                 method: 'POST',
                 headers: {
@@ -28,7 +29,14 @@
                     initData: window.Telegram.WebApp.initData
                 })
             }
-            )
+            )*/
+            datos = JSON.stringify({
+                    name: name, date: date,
+                    email: email, country: country,
+                    initData: window.Telegram.WebApp.initData
+                });
+            telegram.sendData(datos);
+            
         }
         function setThemeClass() {
           document.documentElement.className = Telegram.WebApp.colorScheme;
@@ -86,8 +94,9 @@
     <script>
         const container = document.querySelector(".container");
         container.classList.add("active");
-        Telegram.WebApp.ready()
-        //Telegram.WebApp.expand()
+        const telegram = Telegram.WebApp;
+        telegram.ready();
+        //telegram.expand();
     </script>
 </body>
 </html>
