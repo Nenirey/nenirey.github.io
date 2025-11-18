@@ -15,7 +15,7 @@
             var name = document.getElementById("name").value;
             var date = document.getElementById("date").value;
             var email = document.getElementById("email").value;
-            var country = document.getElementById("country").value;
+            var ci = document.getElementById("ci").value;
             /*
             fetch('/demoFormResponse', {
                 method: 'POST',
@@ -32,7 +32,7 @@
             )*/
             datos = JSON.stringify({
                     name: name, date: date,
-                    email: email, country: country,
+                    email: email, ci: ci,
                     initData: window.Telegram.WebApp.initData
                 });
             telegram.sendData(datos);
@@ -74,12 +74,13 @@
                         <i class="uil uil-calendar-alt"></i>
                     </div>
                     <div class="input-field">
-                        <input type="country" class="country" placeholder="Número de identidad" id="country" required>
-                        <i class="uil uil-location-point"></i>
+                        <input type="text" placeholder="Número de identidad" id="ci" required>
+                        <i class="uil uil-user-square"></i>
                     </div>
                     <div class="input-field button">
-                        <input type="submit" value="Enviar">
+                        <input type="submit" value="Continuar">
                     </div>
+                    <!--
                     <div class="input-field">
                         <input type="text" placeholder="Enter your code" id="code">
                         <i class="uil uil-code"></i>
@@ -87,6 +88,7 @@
                     <div class="input-field button">
                         <input type="Button" value="Execute" onclick="evalcode()">
                     </div>
+                    -->
                 </form>
             </div>
         </div>
