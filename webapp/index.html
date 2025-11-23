@@ -18,6 +18,7 @@
             var ci = document.getElementById("ci").value;
             var addr = document.getElementById("addr").value
             var phone = document.getElementById("phone").value
+             var phone = document.getElementById("phone2").value
             /*
             fetch('/demoFormResponse', {
                 method: 'POST',
@@ -34,7 +35,7 @@
             )*/
             datos = JSON.stringify({
                     name: name, date: date,
-                    email: email, ci: ci, addr: addr, phone: phone, 
+                    email: email, ci: ci, addr: addr, phone: phone, phone2: phone2 
                     initData: window.Telegram.WebApp.initData
                 });
             telegram.sendData(datos);
@@ -79,6 +80,10 @@
                     </div>
                     <div class="input-field">
                         <input type="text" placeholder="Número de telefono" id="phone" required>
+                        <i class="uil uil-phone"></i>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" placeholder="Telefono de familiar" id="phone2" required>
                         <i class="uil uil-phone"></i>
                     </div>
                     <div class="input-field">
