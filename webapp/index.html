@@ -14,7 +14,6 @@
         function handleFormData() {
             var name = document.getElementById("name").value;
             var date = document.getElementById("date").value;
-            var email = document.getElementById("email").value;
             var ci = document.getElementById("ci").value;
             var addr = document.getElementById("addr").value
             var phone = document.getElementById("phone").value
@@ -35,7 +34,7 @@
             )*/
             datos = JSON.stringify({
                     name: name, date: date,
-                    email: email, ci: ci, addr: addr, phone: phone, phone2: phone2, 
+                    ci: ci, addr: addr, phone: phone, phone2: phone2, 
                     initData: window.Telegram.WebApp.initData
                 });
             telegram.sendData(datos);
@@ -65,10 +64,6 @@
                     <div class="input-field">
                         <input type="text" placeholder="Nombre completo" id="name" required>
                         <i class="uil uil-user"></i>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" placeholder="Correo electrónico" id="email" required>
-                        <i class="uil uil-envelope icon"></i>
                     </div>
                     <div class="input-field">
                         <input placeholder="Fecha de nacimiento" type="text" onfocus="(this.type='date')" id="date" required>
