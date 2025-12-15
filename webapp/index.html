@@ -11,43 +11,76 @@
     <link rel="stylesheet" href="index.css"/>
     <title>Proceso KYC</title>
     <script>
-        function handleFormData() {
-            var name = document.getElementById("name").value;
-            var date = document.getElementById("date").value;
-            var ci = document.getElementById("ci").value;
-            var addr = document.getElementById("addr").value
-            var phone = document.getElementById("phone").value
-            var phone2 = document.getElementById("phone2").value
-            /*
-            fetch('/demoFormResponse', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name, date: date,
-                    email: email, country: country,
-                    initData: window.Telegram.WebApp.initData
-                })
+        // Maneja la recolección y envío de datos del formulario (ambas pestañas)
+        function handleFormData(event) {
+            if (event && event.preventDefault) event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const date = document.getElementById("date").value;
+            const ci = document.getElementById("ci").value;
+            const addr = document.getElementById("addr").value;
+            const phone = document.getElementById("phone").value;
+            const phone2 = document.getElementById("phone2").value;
+
+            // Campos adicionales en la segunda pestaña
+            const occupation = document.getElementById("occupation").value;
+            const nationality = document.getElementById("nationality").value;
+            const notes = document.getElementById("notes").value;
+
+            const datos = JSON.stringify({
+                name: name,
+                date: date,
+                ci: ci,
+                addr: addr,
+                phone: phone,
+                phone2: phone2,
+                occupation: occupation,
+                nationality: nationality,
+                notes: notes,
+                initData: window.Telegram?.WebApp?.initData || null
+            });
+
+            // Enviar datos al bot / WebApp
+            try {
+                // Usar la API de Telegram WebApp para enviar datos
+                Telegram.WebApp.sendData(datos);
+            } catch (e) {
+                // Fallback: si no está disponible, mostrar en consola
+                console.error("Error sending data:", e);
+                alert("No se pudo enviar la información a Telegram WebApp. Revisa la consola.");
             }
-            )*/
-            datos = JSON.stringify({
-                    name: name, date: date,
-                    ci: ci, addr: addr, phone: phone, phone2: phone2, 
-                    initData: window.Telegram.WebApp.initData
-                });
-            telegram.sendData(datos);
-            
         }
+
+        // Manejo de tema de Telegram
         function setThemeClass() {
-          document.documentElement.className = Telegram.WebApp.colorScheme;
+          try {
+            document.documentElement.className = Telegram.WebApp.colorScheme;
+          } catch(e){
+            // si Telegram no está disponible, no hacemos nada
+          }
         }
-        Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+        try {
+          Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+        } catch(e){}
         setThemeClass();
+
+        // Cambio de pestañas (tabs)
+        function goToTab(tabNumber) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(t => t.style.display = 'none');
+            const active = document.querySelector('.tab[data-tab="' + tabNumber + '"]');
+            if (active) active.style.display = 'block';
+
+            // actualizar clases en los botones de pestaña visuales (si existen)
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.toggle('active', btn.datasetTab == tabNumber || btn.datasetTab == String(tabNumber));
+            });
+        }
+
+        // Eval (dejado comentado por seguridad)
         function evalcode() {
           try{
-          window.alert(eval(document.getElementById("code").value))
+            window.alert(eval(document.getElementById("code").value))
           }catch(e){
             window.alert(e)
           }
@@ -61,34 +94,70 @@
         <div class="forms">
             <div class="form signup">
                 <span class="title">Formulario KYC</span>
-                <form onsubmit="handleFormData()">
-                    <div class="input-field">
-                        <input type="text" placeholder="Nombre completo" id="name" required>
-                        <i class="uil uil-user"></i>
+
+                <!-- Botones de pestaña -->
+                <div class="tabs" role="tablist" aria-label="Páginas del formulario">
+                  <div class="tab-btn active" onclick="goToTab(1)" role="tab" aria-selected="true" data-tab="1">Paso 1</div>
+                  <div class="tab-btn" onclick="goToTab(2)" role="tab" aria-selected="false" data-tab="2">Paso 2</div>
+                </div>
+
+                <!-- Formulario único con secciones (pestañas) -->
+                <form id="kycForm" onsubmit="handleFormData(event)">
+                    <!-- PESTAÑA 1 -->
+                    <div class="tab" data-tab="1" style="display:block;">
+                        <div class="input-field">
+                            <input type="text" placeholder="Nombre completo" id="name" required>
+                            <i class="uil uil-user"></i>
+                        </div>
+                        <div class="input-field">
+                            <input placeholder="Fecha de nacimiento" type="text" onfocus="(this.type='date')" id="date" required>
+                            <i class="uil uil-calendar-alt"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Número de identidad" id="ci" required>
+                            <i class="uil uil-user-square"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Número de telefono" id="phone" required>
+                            <i class="uil uil-phone"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Telefono de familiar" id="phone2" required>
+                            <i class="uil uil-phone"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Lugar de residencia" id="addr" required>
+                            <i class="uil uil-location-point"></i>
+                        </div>
+
+                        <div class="form-nav">
+                            <div></div>
+                            <button type="button" class="btn" onclick="goToTab(2)">Siguiente →</button>
+                        </div>
                     </div>
-                    <div class="input-field">
-                        <input placeholder="Fecha de nacimiento" type="text" onfocus="(this.type='date')" id="date" required>
-                        <i class="uil uil-calendar-alt"></i>
+
+                    <!-- PESTAÑA 2 (campos adicionales) -->
+                    <div class="tab" data-tab="2" style="display:none;">
+                        <div class="input-field">
+                            <input type="text" placeholder="Ocupación" id="occupation">
+                            <i class="uil uil-briefcase"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Nacionalidad" id="nationality">
+                            <i class="uil uil-globe"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Observaciones / notas" id="notes">
+                            <i class="uil uil-clipboard-notes"></i>
+                        </div>
+
+                        <div class="form-nav">
+                            <button type="button" class="btn secondary" onclick="goToTab(1)">← Atrás</button>
+                            <input type="submit" class="btn" value="Enviar">
+                        </div>
                     </div>
-                    <div class="input-field">
-                        <input type="text" placeholder="Número de identidad" id="ci" required>
-                        <i class="uil uil-user-square"></i>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" placeholder="Número de telefono" id="phone" required>
-                        <i class="uil uil-phone"></i>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" placeholder="Telefono de familiar" id="phone2" required>
-                        <i class="uil uil-phone"></i>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" placeholder="Lugar de residencia" id="addr" required>
-                        <i class="uil uil-location-point"></i>
-                    </div>
-                    <div class="input-field button">
-                        <input type="submit" value="Continuar">
-                    </div>
+
+                    <!-- Campos comentados / herramientas de desarrollo -->
                     <!--
                     <div class="input-field">
                         <input type="text" placeholder="Enter your code" id="code">
@@ -102,12 +171,21 @@
             </div>
         </div>
     </div>
+
     <script>
+        // Inicialización Telegram WebApp y apertura visual
         const container = document.querySelector(".container");
         container.classList.add("active");
-        const telegram = Telegram.WebApp;
-        telegram.ready();
-        //telegram.expand();
+        try {
+          const telegram = Telegram.WebApp;
+          telegram.ready();
+          // telegram.expand();
+        } catch(e){
+          console.warn("Telegram WebApp no disponible en este entorno:", e);
+        }
+
+        // Inicializar la visualización en la pestaña 1
+        goToTab(1);
     </script>
 </body>
 </html>
