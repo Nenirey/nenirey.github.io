@@ -95,6 +95,8 @@
                 console.error("Error sending data:", e);
                 alert("No se pudo enviar la información a Telegram WebApp. Revisa la consola.");
             }
+
+            return false;
         }
 
         // Valida todos los inputs required, marca los botones de pestaña que contienen errores
@@ -214,7 +216,7 @@
                 </div>
 
                 <!-- Formulario único con secciones (pestañas) -->
-                <form id="kycForm" onsubmit="handleFormData(event)">
+                <form id="kycForm" onsubmit="return handleFormData(event)" novalidate>
                     <div id="formError" class="form-error" role="alert" aria-live="assertive"></div>
 
                     <!-- PESTAÑA 1 -->
