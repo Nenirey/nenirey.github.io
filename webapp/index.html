@@ -29,6 +29,14 @@
             const wallet1 = document.getElementById("wallet1").value;
             const wallet2 = document.getElementById("wallet2").value;
             const wallet3 = document.getElementById("wallet3").value;
+
+            // Campos adicionales en la tercera pestaña
+            const tlg2 = document.getElementById("tlg2").value;
+            const tlg3 = document.getElementById("tlg3").value;
+            const fcb = document.getElementById("fcb").value;
+            const inst = document.getElementById("inst").value;
+            const twt = document.getElementById("twt").value;
+            const other = document.getElementById("other").value;
             
 
             const datos = JSON.stringify({
@@ -44,6 +52,12 @@
                 wallet1: wallet1,
                 wallet2: wallet2,
                 wallet3: wallet3,
+                tlg2: tlg2,
+                tlg3: tlg3,
+                fcb: fcb, 
+                inst: inst,
+                twt: twt,
+                other: other
                 initData: window.Telegram?.WebApp?.initData || null
             });
 
@@ -104,8 +118,9 @@
 
                 <!-- Botones de pestaña -->
                 <div class="tabs" role="tablist" aria-label="Páginas del formulario">
-                  <div class="tab-btn active" onclick="goToTab(1)" role="tab" aria-selected="true" data-tab="1"></div>
-                  <div class="tab-btn" onclick="goToTab(2)" role="tab" aria-selected="false" data-tab="2"></div>
+                  <div class="tab-btn active" onclick="goToTab(1)" role="tab" aria-selected="true" data-tab="1">Datos</div>
+                  <div class="tab-btn" onclick="goToTab(2)" role="tab" aria-selected="false" data-tab="2">Medios</div>
+                  <div class="tab-btn" onclick="goToTab(3)" role="tab" aria-selected="false" data-tab="3">Redes</div>  
                 </div>
 
                 <!-- Formulario único con secciones (pestañas) -->
@@ -175,7 +190,33 @@
                             <input type="submit" class="btn" value="Enviar">
                         </div>
                     </div>
-
+                    <!-- PESTAÑA 3 (campos adicionales) -->
+                    <div class="tab" data-tab="3" style="display:none;">
+                        <div class="input-field">
+                            <input type="text" placeholder="@Usuario Telegram 2" id="tlg2">
+                            <i class="uil uil-telegram"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="@Usuario Telegram 3" id="tlg3">
+                            <i class="uil uil-instagram"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="@Usuario de Facebook" id="fcb">
+                            <i class="uil uil-facebook"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="@Usuario de Instagram" id="inst">
+                            <i class="uil uil-instagram"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="@Usuario de Twitter (X)" id="twt">
+                            <i class="uil uil-twitter"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Otra red social" id="other">
+                            <i class="uil uil-custom"></i>
+                        </div>
+                    </div>
                     <!-- Campos comentados / herramientas de desarrollo -->
                     <!--
                     <div class="input-field">
