@@ -15,6 +15,31 @@
         function handleFormData(event) {
             if (event && event.preventDefault) event.preventDefault();
 
+            const form = document.getElementById("kycForm");
+
+            // Validar campos obligatorios en TODAS las pestañas
+            const firstInvalid = validateAllRequired(form);
+            if (firstInvalid) {
+                // si hay un campo inválido, enfocarlo y cambiar de pestaña
+                const tabEl = firstInvalid.closest('.tab');
+                const tabNumber = tabEl ? tabEl.dataset.tab : "1";
+                goToTab(tabNumber);
+                // pequeño retardo para que el cambio de pestaña se renderice antes de scrollear/focus
+                setTimeout(() => {
+                    firstInvalid.classList.add('invalid');
+                    firstInvalid.focus({preventScroll: false});
+                    firstInvalid.scrollIntoView({behavior: 'smooth', block: 'center'});
+                }, 120);
+
+                const fieldName = firstInvalid.placeholder || firstInvalid.getAttribute('aria-label') || firstInvalid.id || 'campo requerido';
+                const msg = "Falta completar: " + fieldName;
+                showFormError(msg);
+                return false;
+            }
+
+            // Si pasa la validación, ocultar mensaje y continuar
+            hideFormError();
+
             const name = document.getElementById("name").value;
             const date = document.getElementById("date").value;
             const ci = document.getElementById("ci").value;
@@ -72,6 +97,68 @@
             }
         }
 
+        // Valida todos los inputs required, marca los botones de pestaña que contienen errores
+        function validateAllRequired(form) {
+            // limpiar marcas previas
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.removeAttribute('data-has-error'));
+            const requiredInputs = Array.from(form.querySelectorAll('input[required]'));
+            let firstInvalid = null;
+            requiredInputs.forEach(input => {
+                input.classList.remove('invalid');
+                const empty = !input.value || input.value.trim() === '';
+                if (empty && !firstInvalid) {
+                    firstInvalid = input;
+                }
+                if (empty) {
+                    // marcar la pestaña que contiene este input como con error
+                    const tab = input.closest('.tab');
+                    if (tab && tab.dataset.tab) {
+                        const btn = document.querySelector('.tab-btn[data-tab="' + tab.dataset.tab + '"]');
+                        if (btn) btn.setAttribute('data-has-error', 'true');
+                    }
+                }
+            });
+            return firstInvalid;
+        }
+
+        function showFormError(msg) {
+            const el = document.getElementById('formError');
+            if (el) {
+                el.textContent = msg;
+                el.classList.add('visible');
+            }
+            // Preferir usar las notificaciones nativas de Telegram si están disponibles
+            try {
+                if (window.Telegram?.WebApp?.showAlert) {
+                    Telegram.WebApp.showAlert(msg); // si existe
+                } else if (window.Telegram?.WebApp?.showPopup) {
+                    Telegram.WebApp.showPopup({ message: msg });
+                }
+            } catch (e) {
+                // si falla, ya se mostró el mensaje en el DOM; fallback final:
+                // console.warn("No se pudo usar Telegram popup: ", e);
+            }
+        }
+
+        function hideFormError() {
+            const el = document.getElementById('formError');
+            if (el) {
+                el.classList.remove('visible');
+                el.textContent = '';
+            }
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.removeAttribute('data-has-error'));
+        }
+
+        // Quitar clase invalid al teclear
+        document.addEventListener('input', function(e) {
+            const tgt = e.target;
+            if (tgt && tgt.tagName === 'INPUT') {
+                if (tgt.value && tgt.value.trim() !== '') {
+                    tgt.classList.remove('invalid');
+                }
+            }
+        });
+
         // Manejo de tema de Telegram
         function setThemeClass() {
           try {
@@ -128,30 +215,32 @@
 
                 <!-- Formulario único con secciones (pestañas) -->
                 <form id="kycForm" onsubmit="handleFormData(event)">
+                    <div id="formError" class="form-error" role="alert" aria-live="assertive"></div>
+
                     <!-- PESTAÑA 1 -->
                     <div class="tab" data-tab="1" style="display:block;">
                         <div class="input-field">
-                            <input type="text" placeholder="Nombre completo" id="name" required>
+                            <input type="text" placeholder="Nombre completo" id="name" required aria-label="Nombre completo">
                             <i class="uil uil-user"></i>
                         </div>
                         <div class="input-field">
-                            <input placeholder="Fecha de nacimiento" type="text" onfocus="(this.type='date')" id="date" required>
+                            <input placeholder="Fecha de nacimiento" type="text" onfocus="(this.type='date')" id="date" required aria-label="Fecha de nacimiento">
                             <i class="uil uil-calendar-alt"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Número de identidad" id="ci" required>
+                            <input type="text" placeholder="Número de identidad" id="ci" required aria-label="Número de identidad">
                             <i class="uil uil-user-square"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Número de telefono" id="phone" required>
+                            <input type="text" placeholder="Número de telefono" id="phone" required aria-label="Número de telefono">
                             <i class="uil uil-phone"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Telefono de familiar" id="phone2" required>
+                            <input type="text" placeholder="Telefono de familiar" id="phone2" required aria-label="Telefono de familiar">
                             <i class="uil uil-phone"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Lugar de residencia" id="addr" required>
+                            <input type="text" placeholder="Lugar de residencia" id="addr" required aria-label="Lugar de residencia">
                             <i class="uil uil-location-point"></i>
                         </div>
 
@@ -164,27 +253,27 @@
                     <!-- PESTAÑA 2 (campos adicionales) -->
                     <div class="tab" data-tab="2" style="display:none;">
                         <div class="input-field">
-                            <input type="text" placeholder="Tarjeta 1" id="card1" required>
+                            <input type="text" placeholder="Tarjeta 1" id="card1" required aria-label="Tarjeta 1">
                             <i class="uil uil-credit-card"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Tarjeta 2" id="card2">
+                            <input type="text" placeholder="Tarjeta 2" id="card2" aria-label="Tarjeta 2">
                             <i class="uil uil-credit-card"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Tarjeta 3" id="card3">
+                            <input type="text" placeholder="Tarjeta 3" id="card3" aria-label="Tarjeta 3">
                             <i class="uil uil-credit-card"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Wallet 1" id="wallet1" required>
+                            <input type="text" placeholder="Wallet 1" id="wallet1" required aria-label="Wallet 1">
                             <i class="uil uil-wallet"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Wallet 2" id="wallet2">
+                            <input type="text" placeholder="Wallet 2" id="wallet2" aria-label="Wallet 2">
                             <i class="uil uil-wallet"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Wallet 3" id="wallet3">
+                            <input type="text" placeholder="Wallet 3" id="wallet3" aria-label="Wallet 3">
                             <i class="uil uil-wallet"></i>
                         </div>
 
@@ -196,27 +285,27 @@
                     <!-- PESTAÑA 3 (campos adicionales) -->
                     <div class="tab" data-tab="3" style="display:none;">
                         <div class="input-field">
-                            <input type="text" placeholder="@Usuario Telegram 2" id="tlg2">
+                            <input type="text" placeholder="@Usuario Telegram 2" id="tlg2" aria-label="@Usuario Telegram 2">
                             <i class="uil uil-telegram"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="@Usuario Telegram 3" id="tlg3">
+                            <input type="text" placeholder="@Usuario Telegram 3" id="tlg3" aria-label="@Usuario Telegram 3">
                             <i class="uil uil-telegram"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="@Usuario de Facebook" id="fcb">
+                            <input type="text" placeholder="@Usuario de Facebook" id="fcb" aria-label="@Usuario de Facebook">
                             <i class="uil uil-facebook"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="@Usuario de Instagram" id="inst">
+                            <input type="text" placeholder="@Usuario de Instagram" id="inst" aria-label="@Usuario de Instagram">
                             <i class="uil uil-instagram"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="@Usuario de Twitter(X)" id="twt">
+                            <input type="text" placeholder="@Usuario de Twitter(X)" id="twt" aria-label="@Usuario de Twitter">
                             <i class="uil uil-twitter"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Otra red social" id="other">
+                            <input type="text" placeholder="Otra red social" id="other" aria-label="Otra red social">
                             <i class="uil uil-at"></i>
                         </div>
 
@@ -256,4 +345,4 @@
         goToTab(1);
     </script>
 </body>
-                                </html>
+    </html>
