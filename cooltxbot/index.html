@@ -7,6 +7,12 @@
         button { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .ad-btn { background-color: #34a853; color: white; }
         .star-btn { background-color: #ffb300; color: black; }
+        .use-bot-btn {
+        background-color: #0088cc; /* Azul Telegram */
+        color: white;
+        margin-top: 20px;
+        border-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+         }
     </style>
 </head>
 <body>
@@ -23,7 +29,7 @@
     tg.expand();
 
     // Inicializar Adsgram con tu Block ID
-    const AdController = window.Adsgram.init({ blockId: "20145" });
+    const AdController = window.Adsgram.init({ blockId: "18918" });
 
     async function watchAd() {
         try {
@@ -48,7 +54,18 @@
         tg.sendData("pay_star");
         tg.close();
     }
-</script>
 
+    function useBotDirectly() {
+    const tg = window.Telegram.WebApp;
+    
+    // El primer parámetro es el texto que aparecerá después de @tu_bot
+    // Si lo dejas vacío "", solo pondrá el nombre del bot.
+    tg.switchInlineQuery("", ["users", "groups", "channels"]); 
+    
+    // Opcionalmente cerramos la webapp (aunque switchInlineQuery suele hacerlo)
+    tg.close();
+    }
+</script>
+<button class="use-bot-btn" onclick="useBotDirectly()">✨ ¡Usar Estilos Ahora!</button>
 </body>
 </html>
