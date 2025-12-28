@@ -16,22 +16,39 @@
     <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Free)</button>
     <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // Abre la WebApp a pantalla completa
+    <script src="https://adsgram.ai/sdk/v1/ad_gram_sdk.js"></script>
 
-        function watchAd() {
-            // Aquí integrarías AdsGram
-            alert("Playing Ad...");
-            // Al terminar:
-            tg.sendData("ad_watched"); // Envía un mensaje al bot y cierra la app
-        }
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-        function payStar() {
-            // Cerramos y pedimos al bot que envíe la factura
-            tg.sendData("pay_star"); 
-            tg.close();
+    // Inicializar Adsgram con tu Block ID
+    const AdController = window.Adsgram.init({ blockId: "20145" });
+
+    async function watchAd() {
+        try {
+            const result = await AdController.show();
+            // El usuario terminó de ver el anuncio correctamente
+            if (result.done) {
+                tg.sendData("ad_watched");
+                tg.close();
+            }
+        } catch (error) {
+            // Manejo de errores (ej: no hay anuncios disponibles o el usuario cerró)
+            if (error.error === 'ad_closed') {
+                alert("Debes ver el anuncio completo para desbloquear los estilos.");
+            } else {
+                alert("Error al cargar el anuncio. Intenta más tarde.");
+            }
+            console.error(error);
         }
-    </script>
+    }
+
+    function payStar() {
+        tg.sendData("pay_star");
+        tg.close();
+    }
+</script>
+
 </body>
 </html>
