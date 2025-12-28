@@ -8,23 +8,45 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Inicializar Adsgram con tu Block ID
-    const AdController = window.Adsgram.init({ blockId: "20149" });
+    // 1. Declaramos la variable fuera para que todas las funciones la vean
+    let AdController = null;
+
+    // 2. Función que inicializa Adsgram SOLO cuando el SDK esté listo
+    function initAds() {
+        if (window.Adsgram) {
+            // REEMPLAZA "TU_BLOCK_ID" por tu ID real de Adsgram
+            AdController = window.Adsgram.init({ blockId: "20149" });
+            console.log("Adsgram inicializado correctamente");
+        } else {
+            console.error("El SDK de Adsgram no se ha cargado todavía");
+        }
+    }
+
+    // 3. Llamamos a la inicialización inmediatamente
+    initAds();
 
     async function watchAd() {
+        // Verificamos si AdController existe antes de usarlo
+        if (!AdController) {
+            // Si falló antes, intentamos inicializar de nuevo
+            initAds();
+            if (!AdController) {
+                alert("Error: El sistema de anuncios no está listo. Revisa tu conexión.");
+                return;
+            }
+        }
+
         try {
             const result = await AdController.show();
-            // El usuario terminó de ver el anuncio correctamente
             if (result.done) {
                 tg.sendData("ad_watched");
                 tg.close();
             }
         } catch (error) {
-            // Manejo de errores (ej: no hay anuncios disponibles o el usuario cerró)
             if (error.error === 'ad_closed') {
-                alert("Debes ver el anuncio completo para desbloquear los estilos.");
+                alert("Debes ver el anuncio completo.");
             } else {
-                alert("Error al cargar el anuncio. Intenta más tarde.\\n"+error);
+                alert("Anuncio no disponible: " + error.description || error.error);
             }
             console.error(error);
         }
@@ -45,7 +67,7 @@
     // Opcionalmente cerramos la webapp (aunque switchInlineQuery suele hacerlo)
     tg.close();
     }
-                              </script>
+    </script>
     <style>
         body { font-family: sans-serif; text-align: center; padding: 20px; background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color); }
         button { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
