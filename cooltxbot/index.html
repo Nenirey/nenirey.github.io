@@ -14,7 +14,6 @@
     // 2. Función que inicializa Adsgram SOLO cuando el SDK esté listo
     function initAds() {
         if (window.Adsgram) {
-            // REEMPLAZA "TU_BLOCK_ID" por tu ID real de Adsgram
             AdController = window.Adsgram.init({ blockId: "20149" });
             console.log("Adsgram inicializado correctamente");
         } else {
