@@ -2,29 +2,9 @@
 <html>
 <head>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color); }
-        button { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .ad-btn { background-color: #34a853; color: white; }
-        .star-btn { background-color: #ffb300; color: black; }
-        .use-bot-btn {
-        background-color: #0088cc; /* Azul Telegram */
-        color: white;
-        margin-top: 20px;
-        border-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
-         }
-    </style>
-</head>
-<body>
-    <h2>Premium Styles</h2>
-    <p>Choose how to unlock all styles:</p>
-    
-    <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Free)</button>
-    <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>
-
     <script src="https://adsgram.ai/sdk/v1/ad_gram_sdk.js"></script>
-
-<script>
+    
+    <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
 
@@ -44,7 +24,7 @@
             if (error.error === 'ad_closed') {
                 alert("Debes ver el anuncio completo para desbloquear los estilos.");
             } else {
-                alert("Error al cargar el anuncio. Intenta más tarde.");
+                alert("Error al cargar el anuncio. Intenta más tarde.\\n"+JSON.stringify(result)));
             }
             console.error(error);
         }
@@ -65,7 +45,26 @@
     // Opcionalmente cerramos la webapp (aunque switchInlineQuery suele hacerlo)
     tg.close();
     }
-</script>
-<button class="use-bot-btn" onclick="useBotDirectly()">✨ Use free style now!</button>
+                              </script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color); }
+        button { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .ad-btn { background-color: #34a853; color: white; }
+        .star-btn { background-color: #ffb300; color: black; }
+        .use-bot-btn {
+        background-color: #0088cc; /* Azul Telegram */
+        color: white;
+        margin-top: 20px;
+        border-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+         }
+    </style>
+</head>
+<body>
+    <h2>Premium Styles</h2>
+    <p>Choose how to unlock all styles:</p>
+    
+    <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Free)</button>
+    <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>    
+    <button class="use-bot-btn" onclick="useBotDirectly()">✨ Use free style now!</button>
 </body>
 </html>
