@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color); }
+        button { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .ad-btn { background-color: #34a853; color: white; }
+        .star-btn { background-color: #ffb300; color: black; }
+    </style>
+</head>
+<body>
+    <h2>Premium Styles</h2>
+    <p>Choose how to unlock +20 styles:</p>
+    
+    <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Free)</button>
+    <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Abre la WebApp a pantalla completa
+
+        function watchAd() {
+            // Aquí integrarías AdsGram
+            alert("Playing Ad...");
+            // Al terminar:
+            tg.sendData("ad_watched"); // Envía un mensaje al bot y cierra la app
+        }
+
+        function payStar() {
+            // Cerramos y pedimos al bot que envíe la factura
+            tg.sendData("pay_star"); 
+            tg.close();
+        }
+    </script>
+</body>
+</html>
