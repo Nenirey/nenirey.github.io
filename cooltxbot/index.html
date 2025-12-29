@@ -1,60 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script> 
     <script src='//libtl.com/sdk.js' data-zone='10390386' data-sdk='show_10390386'></script>
-    <script>
-        
-    const tg = window.Telegram.WebApp;
-    tg.expand();      
-
-    try {
-         // Rewarded interstitial
-         show_10390386().then(() => {
-         // You need to add your user reward function here, which will be executed after the user watches the ad.
-         // For more details, please refer to the detailed instructions.
-         tg.sendData("ad_watched");
-         tg.close();
-         })
-
-     }
-     } catch (error) {
-            if (error.error === 'ad_closed') {
-                alert("Debes ver el anuncio completo.");
-            } else {
-                alert("Anuncio no disponible: " + error.description || error.error);
-            }
-            console.error(error);
-        }
-    }
-
-    function payStar() {
-        tg.sendData("pay_star");
-        tg.close();
-    }
-
-    function useBotDirectly() {
-    const tg = window.Telegram.WebApp;
     
-    // El primer parámetro es el texto que aparecerá después de @tu_bot
-    // Si lo dejas vacío "", solo pondrá el nombre del bot.
-    tg.switchInlineQuery("", ["users", "groups", "channels"]); 
-    
-    // Opcionalmente cerramos la webapp (aunque switchInlineQuery suele hacerlo)
-    tg.close();
-    }
-    </script>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color); }
-        button { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: var(--tg-theme-bg-color, #ffffff); 
+            color: var(--tg-theme-text-color, #000000); 
+        }
+        button { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 16px;
+        }
         .ad-btn { background-color: #34a853; color: white; }
         .star-btn { background-color: #ffb300; color: black; }
         .use-bot-btn {
-        background-color: #0088cc; /* Azul Telegram */
-        color: white;
-        margin-top: 20px;
-        border-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
-         }
+            background-color: #0088cc; 
+            color: white;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -64,5 +42,40 @@
     <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Free)</button>
     <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>    
     <button class="use-bot-btn" onclick="useBotDirectly()">✨ Use free style now!</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function watchAd() {
+            // Verificamos si la función de Monetag existe
+            if (typeof show_10390386 === 'function') {
+                show_10390386().then(() => {
+                    // El anuncio se mostró con éxito
+                    tg.sendData("ad_watched");
+                    tg.close();
+                }).catch((error) => {
+                    console.error("Error con el anuncio:", error);
+                    alert("No se pudo cargar el anuncio. Inténtalo de nuevo más tarde.");
+                });
+            } else {
+                alert("El sistema de anuncios se está cargando. Espera un segundo.");
+            }
+        }
+
+        function payStar() {
+            tg.sendData("pay_star");
+            tg.close();
+        }
+
+        function useBotDirectly() {
+            // Abre el bot en modo inline para usar los estilos básicos
+            tg.switchInlineQuery("", ["users", "groups", "channels"]); 
+            tg.close();
+        }
+
+        // Notificar a Telegram que la app está lista
+        tg.ready();
+    </script>
 </body>
 </html>
