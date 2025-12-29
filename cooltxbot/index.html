@@ -1,47 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> 
+    <script src='//libtl.com/sdk.js' data-zone='10390386' data-sdk='show_10390386'></script>
     <script>
         
     const tg = window.Telegram.WebApp;
-    tg.expand();
+    tg.expand();      
 
-    // 1. Declaramos la variable fuera para que todas las funciones la vean
-    let AdController = null;
+    try {
+         // Rewarded interstitial
+         show_10390386().then(() => {
+         // You need to add your user reward function here, which will be executed after the user watches the ad.
+         // For more details, please refer to the detailed instructions.
+         tg.sendData("ad_watched");
+         tg.close();
+         })
 
-    // 2. Función que inicializa Adsgram SOLO cuando el SDK esté listo
-    function initAds() {
-        if (window.Adsgram) {
-            AdController = window.Adsgram.init({ blockId: "20149" });
-            console.log("Adsgram inicializado correctamente");
-        } else {
-            console.error("El SDK de Adsgram no se ha cargado todavía");
-        }
-    }
-
-    // 3. Llamamos a la inicialización inmediatamente
-    initAds();
-
-    async function watchAd() {
-        // Verificamos si AdController existe antes de usarlo
-        if (!AdController) {
-            // Si falló antes, intentamos inicializar de nuevo
-            initAds();
-            if (!AdController) {
-                alert("Error: El sistema de anuncios no está listo. Revisa tu conexión.");
-                return;
-            }
-        }
-
-        try {
-            const result = await AdController.show();
-            if (result.done) {
-                tg.sendData("ad_watched");
-                tg.close();
-            }
-        } catch (error) {
+     }
+     } catch (error) {
             if (error.error === 'ad_closed') {
                 alert("Debes ver el anuncio completo.");
             } else {
