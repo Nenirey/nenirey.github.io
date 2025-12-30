@@ -13,6 +13,19 @@
             padding: 20px; 
             background-color: var(--tg-theme-bg-color, #ffffff); 
             color: var(--tg-theme-text-color, #000000); 
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .bot-logo { font-size: 50px; margin-bottom: 10px; }
+        
+        .description-box {
+            margin-bottom: 25px;
+        }
+        .description-box p {
+            font-size: 15px;
+            line-height: 1.4;
+            color: var(--tg-theme-hint-color, #666);
         }
 
         .examples-box {
@@ -29,23 +42,27 @@
         button { 
             display: block; width: 100%; padding: 15px; margin: 10px 0; 
             border: none; border-radius: 8px; font-weight: bold; 
-            cursor: pointer; font-size: 16px; transition: opacity 0.2s;
+            cursor: pointer; font-size: 16px; transition: transform 0.1s;
         }
-        button:active { opacity: 0.7; }
+        button:active { transform: scale(0.98); }
 
         .ad-btn { background-color: #34a853; color: white; }
         .star-btn { background-color: #ffb300; color: black; }
         .use-bot-btn {
             background-color: #0088cc; color: white; margin-top: 20px;
             box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
-            text-decoration: none; /* Por si se comporta como link */
+            text-decoration: none;
         }
 
         #premium-controls { display: none; }
     </style>
 </head>
 <body>
-    <h2>Premium Styles</h2>
+    <div class="bot-logo">✨</div>
+    <div class="description-box">
+        <h2 style="margin-bottom: 10px;">Cooltxbot</h2>
+        <p>Transform your messages with <b>exclusive fonts and styles</b> directly in any Telegram chat. No installation required!</p>
+    </div>
     
     <div class="examples-box">
         <div class="example-line">
@@ -62,39 +79,35 @@
         </div>
     </div>
 
-    <p id="instruction-text">Choose how to unlock all styles:</p>
+    <p id="instruction-text" style="font-weight: bold;">Unlock all 50+ premium styles:</p>
     
     <div id="premium-controls">
-        <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Free)</button>
+        <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Unlock for Free)</button>
         <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>    
     </div>
 
-    <button id="main-action-btn" class="use-bot-btn" onclick="handleMainAction()">✨ Use free style now!</button>
+    <button id="main-action-btn" class="use-bot-btn" onclick="handleMainAction()">✨ Use free styles now!</button>
 
     <script>
         const tg = window.Telegram.WebApp;
-        const BOT_USERNAME = "Cooltxbot";
+        const BOT_USERNAME = "Cooltxbot"; 
         tg.expand();
 
         window.onload = function() {
             if (tg.platform !== 'unknown') {
-                // Estamos en Telegram
                 document.getElementById('premium-controls').style.display = 'block';
             } else {
-                // Fuera de Telegram
                 document.getElementById('instruction-text').innerHTML = 
-                    "Unlock premium styles by using our bot directly.";
-                document.getElementById('main-action-btn').innerHTML = "✨ Open in Telegram";
+                    "Ready to upgrade your chat game?";
+                document.getElementById('main-action-btn').innerHTML = "🚀 Open Cooltxbot in Telegram";
             }
         };
 
         function handleMainAction() {
             if (tg.platform !== 'unknown') {
-                // Comportamiento dentro de Telegram: abrir modo inline
                 tg.switchInlineQuery("", ["users", "groups", "channels"]); 
                 tg.close();
             } else {
-                // Comportamiento fuera de Telegram: redirigir al bot
                 window.location.href = `https://t.me/${BOT_USERNAME}`;
             }
         }
@@ -104,7 +117,7 @@
                 show_10390386().then(() => {
                     tg.showPopup({
                         title: "Success!",
-                        message: "All styles have been unlocked.",
+                        message: "All styles have been unlocked. Enjoy!",
                         buttons: [{type: "ok"}]
                     }, () => {
                         tg.sendData("ad_watched");
@@ -112,7 +125,7 @@
                     });
                 }).catch((error) => {
                     console.error("Ad Error:", error);
-                    tg.showAlert("Ad not available, try again later.");
+                    tg.showAlert("Ad not available. Please try again in a few minutes.");
                 });
             } else {
                 tg.showAlert("Loading ad system...");
