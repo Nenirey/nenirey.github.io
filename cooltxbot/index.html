@@ -15,7 +15,6 @@
             color: var(--tg-theme-text-color, #000000); 
         }
 
-        /* Contenedor de ejemplos visuales */
         .examples-box {
             background-color: var(--tg-theme-secondary-bg-color, #f4f4f4);
             border-radius: 12px;
@@ -24,42 +23,24 @@
             text-align: left;
             border: 1px solid rgba(0,0,0,0.1);
         }
-        .example-line {
-            margin-bottom: 10px;
-            font-size: 15px;
-        }
-        .label {
-            display: block;
-            font-size: 10px;
-            color: #888;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
+        .example-line { margin-bottom: 10px; font-size: 15px; }
+        .label { display: block; font-size: 10px; color: #888; text-transform: uppercase; font-weight: bold; }
 
         button { 
-            display: block; 
-            width: 100%; 
-            padding: 15px; 
-            margin: 10px 0; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 16px;
-            transition: opacity 0.2s;
+            display: block; width: 100%; padding: 15px; margin: 10px 0; 
+            border: none; border-radius: 8px; font-weight: bold; 
+            cursor: pointer; font-size: 16px; transition: opacity 0.2s;
         }
         button:active { opacity: 0.7; }
 
         .ad-btn { background-color: #34a853; color: white; }
         .star-btn { background-color: #ffb300; color: black; }
         .use-bot-btn {
-            background-color: #0088cc; 
-            color: white;
-            margin-top: 20px;
+            background-color: #0088cc; color: white; margin-top: 20px;
             box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+            text-decoration: none; /* Por si se comporta como link */
         }
 
-        /* Ocultar botones premium por defecto */
         #premium-controls { display: none; }
     </style>
 </head>
@@ -88,27 +69,39 @@
         <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>    
     </div>
 
-    <button class="use-bot-btn" onclick="useBotDirectly()">✨ Use free style now!</button>
+    <button id="main-action-btn" class="use-bot-btn" onclick="handleMainAction()">✨ Use free style now!</button>
 
     <script>
         const tg = window.Telegram.WebApp;
+        const BOT_USERNAME = "TuBotUser_bot"; // CAMBIA ESTO por el username de tu bot
         tg.expand();
 
-        // Detectar si estamos en Telegram
         window.onload = function() {
-            // Si la plataforma no es 'unknown', estamos en la app de Telegram
             if (tg.platform !== 'unknown') {
+                // Estamos en Telegram
                 document.getElementById('premium-controls').style.display = 'block';
             } else {
+                // Fuera de Telegram
                 document.getElementById('instruction-text').innerHTML = 
-                    "⚠️ <b>Access via Telegram</b> to unlock premium features.";
+                    "Unlock premium styles by using our bot directly.";
+                document.getElementById('main-action-btn').innerHTML = "✨ Open in Telegram";
             }
         };
+
+        function handleMainAction() {
+            if (tg.platform !== 'unknown') {
+                // Comportamiento dentro de Telegram: abrir modo inline
+                tg.switchInlineQuery("", ["users", "groups", "channels"]); 
+                tg.close();
+            } else {
+                // Comportamiento fuera de Telegram: redirigir al bot
+                window.location.href = `https://t.me/${BOT_USERNAME}`;
+            }
+        }
 
         function watchAd() {
             if (typeof show_10390386 === 'function') {
                 show_10390386().then(() => {
-                    // Popup nativo de éxito
                     tg.showPopup({
                         title: "Success!",
                         message: "All styles have been unlocked.",
@@ -119,20 +112,15 @@
                     });
                 }).catch((error) => {
                     console.error("Ad Error:", error);
-                    tg.showAlert("Anuncio no disponible en este momento.");
+                    tg.showAlert("Ad not available, try again later.");
                 });
             } else {
-                tg.showAlert("Cargando sistema de anuncios...");
+                tg.showAlert("Loading ad system...");
             }
         }
 
         function payStar() {
             tg.sendData("pay_star");
-            tg.close();
-        }
-
-        function useBotDirectly() {
-            tg.switchInlineQuery("", ["users", "groups", "channels"]); 
             tg.close();
         }
 
