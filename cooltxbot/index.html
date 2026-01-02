@@ -95,7 +95,7 @@
         tg.expand();
 
         window.onload = function() {
-            if (tg.platform !== 'unknown' && !(!user || !webapp.initData)) {
+            if (tg.platform !== 'unknown') {
                 document.getElementById('premium-controls').style.display = 'block';
             } else {
                 document.getElementById('instruction-text').innerHTML = 
@@ -105,7 +105,7 @@
         };
 
         function handleMainAction() {
-            if (tg.platform !== 'unknown' && !(!user || !webapp.initData)) {
+            if (tg.platform !== 'unknown') {
                 tg.switchInlineQuery("", ["users", "groups", "channels"]); 
                 tg.close();
             } else {
