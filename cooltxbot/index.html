@@ -92,9 +92,10 @@
         const tg = window.Telegram.WebApp;
         const BOT_USERNAME = "Cooltxbot";
         tg.expand();
+        const USER = tg.initDataUnsafe.user;
 
         window.onload = function() {
-            if (tg.platform !== 'unknown') {
+            if (tg.platform !== 'unknown' && !USER) {
                 document.getElementById('premium-controls').style.display = 'block';
             } else {
                 document.getElementById('instruction-text').innerHTML = 
@@ -104,7 +105,7 @@
         };
 
         function handleMainAction() {
-            if (tg.platform !== 'unknown') {
+            if (tg.platform !== 'unknown' && !USER) {
                 tg.switchInlineQuery("", ["users", "groups", "channels"]); 
                 tg.close();
             } else {
