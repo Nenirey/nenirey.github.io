@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SDK Oficial de Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script> 
+    <!-- RED DE ANUNCIOS 1: SDK LibTL / Adsterra para anuncios recompensados -->
     <script src='//libtl.com/sdk.js' data-zone='10390386' data-sdk='show_10390386'></script>
     
     <style>
@@ -55,6 +57,15 @@
         }
 
         #premium-controls { display: none; }
+        
+        /* Contenedor centrado para el banner publicitario */
+        .ad-banner-container {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 50px;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +86,7 @@
         </div>
         <div class="example-line">
             <span class="label">Double Struck</span>
-            𝕋𝕙𝕚𝕤 𝕚𝕤 𝕒 𝕡𝕣𝕖𝕞𝕚𝕦𝔪 𝕤𝕥𝕕𝕚𝕖
+            𝕋𝕙𝕚𝔰 𝕚𝕤 𝕒 𝕡𝕣𝕖𝕞𝕚𝕦𝔪 𝓼𝓽𝕞𝓵𝓮
         </div>
     </div>
 
@@ -87,6 +98,20 @@
     </div>
 
     <button id="main-action-btn" class="use-bot-btn" onclick="handleMainAction()">✨ Use free styles now!</button>
+
+    <!-- RED DE ANUNCIOS 2: Banner 320x50 de HighPerformanceFormat al final de la página -->
+    <div class="ad-banner-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '7a4af815def0e14dc22459b7cd950a19',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="https://www.highperformanceformat.com/7a4af815def0e14dc22459b7cd950a19/invoke.js"></script>
+    </div>
 
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
@@ -109,18 +134,17 @@
             }
         };
 
-        // FUNCIÓN CORREGIDA DEL BOTÓN PRINCIPAL
+        // ACCIÓN DEL BOTÓN PRINCIPAL
         function handleMainAction() {
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('medium');
             }
 
             if (tg) {
-                // Si la WebApp está dentro de Telegram, ejecutamos la consulta inline nativa
                 if (typeof tg.switchInlineQuery === 'function') {
+                    // Abre el selector de chats de Telegram para usar el modo inline
                     tg.switchInlineQuery(" ", ["users", "groups", "channels"]);
                 } 
-                // Fallback con el método oficial de apertura de enlaces de Telegram
                 else if (typeof tg.openTelegramLink === 'function') {
                     tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
                 } 
@@ -128,46 +152,50 @@
                     window.open(`https://t.me/${BOT_USERNAME}`, '_blank');
                 }
             } else {
-                // Fallback para navegadores normales fuera de Telegram
                 window.open(`https://t.me/${BOT_USERNAME}`, '_blank');
             }
         }
 
+        // ACCIÓN DE ANUNCIO RECOMPENSADO (Adsterra / LibTL)
         function watchAd() {
             if (typeof show_10390386 === 'function') {
                 show_10390386().then(() => {
-                    tg.showPopup({
-                        title: "Success!",
-                        message: "All styles have been unlocked. Enjoy!",
-                        buttons: [{type: "ok"}]
-                    }, () => {
-                        tg.sendData("ad_watched");
-                        tg.close();
-                    });
+                    if (tg && typeof tg.showPopup === 'function') {
+                        tg.showPopup({
+                            title: "Success!",
+                            message: "All styles have been unlocked. Enjoy!",
+                            buttons: [{type: "ok"}]
+                        }, () => {
+                            if (typeof tg.sendData === 'function') tg.sendData("ad_watched");
+                            tg.close();
+                        });
+                    } else {
+                        alert("All styles have been unlocked. Enjoy!");
+                    }
                 }).catch((error) => {
                     console.error("Ad Error:", error);
-                    tg.showAlert("Ad not available. Please try again in a few minutes.");
+                    if (tg && typeof tg.showAlert === 'function') {
+                        tg.showAlert("Ad not available. Please try again in a few minutes.");
+                    } else {
+                        alert("Ad not available. Please try again in a few minutes.");
+                    }
                 });
             } else {
-                tg.showAlert("Loading ad system...");
+                if (tg && typeof tg.showAlert === 'function') {
+                    tg.showAlert("Loading ad system...");
+                } else {
+                    alert("Loading ad system...");
+                }
             }
         }
 
+        // ACCIÓN DE PAGO CON ESTRELLAS
         function payStar() {
-            tg.sendData("pay_star");
-            tg.close();
+            if (tg) {
+                if (typeof tg.sendData === 'function') tg.sendData("pay_star");
+                tg.close();
+            }
         }
     </script>
-
-    <script>
-      atOptions = {
-        'key' : '7a4af815def0e14dc22459b7cd950a19',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highperformanceformat.com/7a4af815def0e14dc22459b7cd950a19/invoke.js"></script>
 </body>
 </html>
