@@ -8,10 +8,11 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: var(--tg-theme-bg-color, #1a1a1a);
-            --text-color: var(--tg-theme-text-color, #ffffff);
-            --button-color: var(--tg-theme-button-color, #0088cc);
-            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --accent-color: #0088cc;
+            --subtext-color: #aaaaaa;
         }
 
         body {
@@ -33,44 +34,89 @@
             width: 100%;
         }
 
-        h1 {
-            font-size: 2rem;
+        .icon {
+            font-size: 3rem;
             margin-bottom: 10px;
         }
 
-        p {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: 30px;
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        p.description {
+            font-size: 0.95rem;
+            color: var(--subtext-color);
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .examples {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .example-item {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .example-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .example-label {
+            color: var(--subtext-color);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 2px;
         }
 
         .btn-primary {
-            background-color: var(--button-color);
-            color: var(--button-text-color);
+            background-color: var(--accent-color);
+            color: #ffffff;
             border: none;
-            padding: 14px 24px;
+            padding: 14px 20px;
             font-size: 1rem;
-            font-weight: bold;
-            border-radius: 12px;
+            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: transform 0.1s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+            transition: transform 0.1s ease, background-color 0.2s ease;
         }
 
         .btn-primary:active {
             transform: scale(0.98);
-            opacity: 0.9;
+            background-color: #0077b5;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Cool Text Bot 😎</h1>
-        <p>Transform your normal messages into awesome stylized text instantly inside Telegram.</p>
+        <div class="icon">😎</div>
+        <h1>Cool Text Bot</h1>
+        <p class="description">Transform your normal messages into awesome stylized text instantly inside any Telegram chat.</p>
         
-        <!-- Botón para interactuar -->
+        <div class="examples">
+            <div class="example-item">
+                <span class="example-label">Input</span>
+                <div>Hello World</div>
+            </div>
+            <div class="example-item" style="margin-top: 12px;">
+                <span class="example-label">Styled Output</span>
+                <div><b>🇭🇪🇱🇱🇴 🇼🇴🇷🇱🇩</b> / 贬𝔢𝔬 𝒲𝔬𝔯𝔡</div>
+            </div>
+        </div>
+
+        <!-- Botón con la acción corregida -->
         <button id="openBotBtn" class="btn-primary">
             Open cooltxbot in Telegram
         </button>
@@ -78,31 +124,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Inicializamos el SDK de Telegram
+            // Inicializar el SDK de Telegram
             const tg = window.Telegram ? window.Telegram.WebApp : null;
 
             if (tg) {
-                // Notificar a Telegram que la WebApp está lista
                 tg.ready();
-                // Expandir la interfaz a pantalla completa
                 tg.expand();
             }
 
             const btn = document.getElementById('openBotBtn');
 
             btn.addEventListener('click', function () {
-                // Feedback háptico (vibración leve) si está disponible en móviles
+                // Vibración al presionar
                 if (tg && tg.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('medium');
                 }
 
                 if (tg) {
-                    // Opción 1: Iniciar la búsqueda inline en el chat
+                    // Si está dentro de Telegram, ejecutamos la consulta inline nativa
                     if (typeof tg.switchInlineQuery === 'function') {
-                        // Enviamos el espacio para abrir la lista de formatos en el selector de chats
                         tg.switchInlineQuery(" ", ["users", "groups", "channels"]);
                     } 
-                    // Opción 2: Abrir el chat privado directamente con el bot
                     else if (typeof tg.openTelegramLink === 'function') {
                         tg.openTelegramLink('https://t.me/cooltxbot');
                     } 
@@ -110,7 +152,7 @@
                         window.open('https://t.me/cooltxbot', '_blank');
                     }
                 } else {
-                    // Fallback para navegadores comunes fuera de Telegram
+                    // Si se abre desde un navegador normal fuera de Telegram
                     window.open('https://t.me/cooltxbot', '_blank');
                 }
             });
