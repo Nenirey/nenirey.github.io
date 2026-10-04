@@ -1,162 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool Text Bot</title>
-    <!-- SDK Oficial de Telegram WebApp -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> 
+    <script src='//libtl.com/sdk.js' data-zone='10390386' data-sdk='show_10390386'></script>
+    
     <style>
-        :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #ffffff;
-            --accent-color: #0088cc;
-            --subtext-color: #aaaaaa;
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            text-align: center; 
+            padding: 20px; 
+            background-color: var(--tg-theme-bg-color, #ffffff); 
+            color: var(--tg-theme-text-color, #000000); 
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 90vh;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-
-        p.description {
-            font-size: 0.95rem;
-            color: var(--subtext-color);
+        .bot-logo { font-size: 50px; margin-bottom: 10px; }
+        
+        .description-box {
             margin-bottom: 25px;
+        }
+        .description-box p {
+            font-size: 15px;
             line-height: 1.4;
+            color: var(--tg-theme-hint-color, #666);
         }
 
-        .examples {
-            background: var(--card-bg);
+        .examples-box {
+            background-color: var(--tg-theme-secondary-bg-color, #f4f4f4);
             border-radius: 12px;
             padding: 15px;
-            margin-bottom: 25px;
+            margin: 20px 0;
             text-align: left;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .example-line { margin-bottom: 10px; font-size: 15px; }
+        .label { display: block; font-size: 10px; color: #888; text-transform: uppercase; font-weight: bold; }
+
+        button { 
+            display: block; width: 100%; padding: 15px; margin: 10px 0; 
+            border: none; border-radius: 8px; font-weight: bold; 
+            cursor: pointer; font-size: 16px; transition: transform 0.1s;
+        }
+        button:active { transform: scale(0.98); }
+
+        .ad-btn { background-color: #34a853; color: white; }
+        .star-btn { background-color: #ffb300; color: black; }
+        .use-bot-btn {
+            background-color: #0088cc; color: white; margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+            text-decoration: none;
         }
 
-        .example-item {
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .example-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .example-label {
-            color: var(--subtext-color);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: #ffffff;
-            border: none;
-            padding: 14px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
-            transition: transform 0.1s ease, background-color 0.2s ease;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-            background-color: #0077b5;
-        }
+        #premium-controls { display: none; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="icon">😎</div>
-        <h1>Cool Text Bot</h1>
-        <p class="description">Transform your normal messages into awesome stylized text instantly inside any Telegram chat.</p>
-        
-        <div class="examples">
-            <div class="example-item">
-                <span class="example-label">Input</span>
-                <div>Hello World</div>
-            </div>
-            <div class="example-item" style="margin-top: 12px;">
-                <span class="example-label">Styled Output</span>
-                <div><b>🇭🇪🇱🇱🇴 🇼🇴🇷🇱🇩</b> / 贬𝔢𝔬 𝒲𝔬𝔯𝔡</div>
-            </div>
+    <div class="bot-logo">✨</div>
+    <div class="description-box">
+        <h2 style="margin-bottom: 10px;">Cooltxbot</h2>
+        <p>Transform your messages with <b>exclusive fonts and styles</b> directly in any Telegram chat. No installation required!</p>
+    </div>
+    
+    <div class="examples-box">
+        <div class="example-line">
+            <span class="label">Fancy Style</span>
+            𝓣𝓱𝓲𝓼 𝓲𝓼 𝓪 𝓹𝓻𝓮𝓶𝓲𝓾𝓶 𝓼𝓽𝔂𝓵𝓮
         </div>
-
-        <!-- Botón con la acción corregida -->
-        <button id="openBotBtn" class="btn-primary">
-            Open cooltxbot in Telegram
-        </button>
+        <div class="example-line">
+            <span class="label">Gothic Style</span>
+            𝔗𝔥𝔦𝔰 𝔦𝔰 𝔞 𝔭𝔯𝔢𝔪𝔦𝔲𝔪 𝔰𝔱𝔶𝔩𝔢
+        </div>
+        <div class="example-line">
+            <span class="label">Double Struck</span>
+            𝕋𝕙𝕚𝕤 𝕚𝕤 𝕒 𝕡𝕣𝕖𝕞𝕚𝕦𝔪 𝕤𝕥𝕕𝕚𝕖
+        </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Inicializar el SDK de Telegram
-            const tg = window.Telegram ? window.Telegram.WebApp : null;
+    <p id="instruction-text" style="font-weight: bold;">Unlock all premium styles:</p>
+    
+    <div id="premium-controls">
+        <button class="ad-btn" onclick="watchAd()">📺 Watch Ad (Unlock for Free)</button>
+        <button class="star-btn" onclick="payStar()">⭐ Donate 1 Star</button>    
+    </div>
 
-            if (tg) {
-                tg.ready();
-                tg.expand();
+    <button id="main-action-btn" class="use-bot-btn" onclick="handleMainAction()">✨ Use free styles now!</button>
+
+    <script>
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        const BOT_USERNAME = "Cooltxbot";
+        
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        const USER = tg ? tg.initDataUnsafe.user : null;
+
+        window.onload = function() {
+            if (tg && tg.platform !== 'unknown' && !USER) {
+                document.getElementById('premium-controls').style.display = 'block';
+            } else {
+                document.getElementById('instruction-text').innerHTML = 
+                    "Ready to upgrade your chat game?";
+                document.getElementById('main-action-btn').innerHTML = "🚀 Open Cooltxbot in Telegram";
+            }
+        };
+
+        // FUNCIÓN CORREGIDA DEL BOTÓN PRINCIPAL
+        function handleMainAction() {
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
             }
 
-            const btn = document.getElementById('openBotBtn');
-
-            btn.addEventListener('click', function () {
-                // Vibración al presionar
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
+            if (tg) {
+                // Si la WebApp está dentro de Telegram, ejecutamos la consulta inline nativa
+                if (typeof tg.switchInlineQuery === 'function') {
+                    tg.switchInlineQuery(" ", ["users", "groups", "channels"]);
+                } 
+                // Fallback con el método oficial de apertura de enlaces de Telegram
+                else if (typeof tg.openTelegramLink === 'function') {
+                    tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
+                } 
+                else {
+                    window.open(`https://t.me/${BOT_USERNAME}`, '_blank');
                 }
+            } else {
+                // Fallback para navegadores normales fuera de Telegram
+                window.open(`https://t.me/${BOT_USERNAME}`, '_blank');
+            }
+        }
 
-                if (tg) {
-                    // Si está dentro de Telegram, ejecutamos la consulta inline nativa
-                    if (typeof tg.switchInlineQuery === 'function') {
-                        tg.switchInlineQuery(" ", ["users", "groups", "channels"]);
-                    } 
-                    else if (typeof tg.openTelegramLink === 'function') {
-                        tg.openTelegramLink('https://t.me/cooltxbot');
-                    } 
-                    else {
-                        window.open('https://t.me/cooltxbot', '_blank');
-                    }
-                } else {
-                    // Si se abre desde un navegador normal fuera de Telegram
-                    window.open('https://t.me/cooltxbot', '_blank');
-                }
-            });
-        });
+        function watchAd() {
+            if (typeof show_10390386 === 'function') {
+                show_10390386().then(() => {
+                    tg.showPopup({
+                        title: "Success!",
+                        message: "All styles have been unlocked. Enjoy!",
+                        buttons: [{type: "ok"}]
+                    }, () => {
+                        tg.sendData("ad_watched");
+                        tg.close();
+                    });
+                }).catch((error) => {
+                    console.error("Ad Error:", error);
+                    tg.showAlert("Ad not available. Please try again in a few minutes.");
+                });
+            } else {
+                tg.showAlert("Loading ad system...");
+            }
+        }
+
+        function payStar() {
+            tg.sendData("pay_star");
+            tg.close();
+        }
     </script>
+
+    <script>
+      atOptions = {
+        'key' : '7a4af815def0e14dc22459b7cd950a19',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script src="https://www.highperformanceformat.com/7a4af815def0e14dc22459b7cd950a19/invoke.js"></script>
 </body>
 </html>
